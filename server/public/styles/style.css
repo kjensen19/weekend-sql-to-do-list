@@ -5,3 +5,83 @@ html {
 header {
     color:red;
 }
+
+.true  {
+    background-color: green;
+}
+
+button.true::before {
+    content: "✅ "
+} 
+
+
+#table-container {
+    display: flex;
+    align-items: left;
+    align-content:space-between;
+    border: 1rem solid teal;
+    border-radius: 1rem;
+    background-color: white;
+  }
+
+  table {
+    border-collapse: collapse;
+    border: 1px solid teal;
+    text-align: center;
+	vertical-align: middle;
+    width: 100%;
+    font-size: 2rem;
+    color: slategray ;
+    min-height: 10rem;
+    border-right: 1rem solid darkslateblue;
+    background-color: white;
+  }
+
+  caption {
+    font-weight: bold;
+    font-size: 2.5rem;
+    text-align: center;
+    color: #333;
+    padding: .3rem;
+    margin-bottom: 2rem;
+    border-bottom: 1rem solid darkslateblue;
+    width: 100%;
+    color: darkslateblue;
+    background-color: white;
+  }
+
+  thead {
+    background-color: darkslateblue;
+    color: white;
+    font-size: 1.75rem;
+	  text-transform: uppercase;
+	  letter-spacing: 2%;
+  }
+
+  /* if border set in table it is outside, in th, td it is all cells */
+
+  th, td {
+    padding: .5rem;
+  }
+
+  thead th {
+    width: 20%;
+  }
+/* highlight cell for emphasis */
+  .true{
+    background-color:mediumspringgreen;
+    font-weight: bold;
+  }
+
+  tbody tr:nth-child(odd) {
+    background-color: #fff;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #eee;
+  }
+
+  tr.true td{
+    background-color: lightgreen;
+    font-weight: bold;
+  }

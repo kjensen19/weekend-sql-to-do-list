@@ -17,9 +17,9 @@ function renderTasks (tasks){
     $('#viewTasks').empty();
     for(let task of tasks){
       $('#viewTasks').append(`
-        <tr data-id="${task.id}">
+        <tr class="${task.complete}" data-id="${task.id}">
             <td>
-                <button class="compButton">Task Complete</button>
+                <button class="compButton ${task.complete}">Task Complete</button>
             </td>
             <td>${task.task}</td>
             <td>${task.complete}</td>
@@ -69,6 +69,9 @@ function fetchTasks() {
 //PUT to update completion
 function completeTask() {
     let idToUpdate = $(this).closest('tr').data('id')
+    console.log($(this))
+    $(this).text('✅')
+    $(this).attr('disable', true)
     console.log('I already read that one')
     $.ajax({
         method: 'PUT',
