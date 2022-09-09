@@ -2,7 +2,7 @@ $(document).ready(onReady);
 
 function onReady() {
   console.log('JS/JQ')
-  renderTasks()
+  fetchTasks()
   $('#viewTasks').on('click', '.compButton', completeTask)
   $('#viewTasks').on('click', '.delButton', deleteTask)
   $('#submitBut').on('click', handleSubmit)
@@ -12,7 +12,7 @@ function onReady() {
 //Function to render task data,
 //including comp/del buttons
 //and attach id for manipulation
-function renderTasks (){
+function renderTasks (tasks){
     console.log('Is this thing on? RENDER')
     $('#viewTasks').empty();
     for(let task of tasks){
@@ -38,7 +38,6 @@ function handleSubmit() {
     addTask(newTask);
 }
 
-
 //POST to add new task
 function addTask(taskToAdd) {
     $.ajax({
@@ -47,7 +46,7 @@ function addTask(taskToAdd) {
         data: taskToAdd
     }).then(function(response) {
         console.log('Response from server.', response);
-        refreshTasks();
+        fetchTasks();
     }).catch(function(error) {
         console.log('Error in POST', error)
         alert('Unable to add task at this time, please try again later');
@@ -78,7 +77,6 @@ function completeTask() {
         fetchTasks()
     })
 }
-
 
 //DELETE to del task
 function deleteTask() {
