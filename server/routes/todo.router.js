@@ -37,7 +37,7 @@ toDoRouter.post('/', (req, res) => {
 
 // PUT
 toDoRouter.put('/:idToUpdate', (req, res) => {
-    let taskMarkedComplete = req.params.idToChange;
+    let taskMarkedComplete = req.params.idToUpdate;
 
     const sqlQuery = `
         UPDATE "tasks"
@@ -58,8 +58,8 @@ toDoRouter.put('/:idToUpdate', (req, res) => {
 })
 
 // DELETE
-toDoRouter.delete('/:idToDElete', (req, res) => {
-    console.log(reqParams)
+toDoRouter.delete('/:idToDelete', (req, res) => {
+    console.log(req.params)
     taskId = req.params.idToDelete
 
     const sqlQuery = `

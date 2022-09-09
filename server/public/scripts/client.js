@@ -17,7 +17,7 @@ function renderTasks (tasks){
     $('#viewTasks').empty();
     for(let task of tasks){
       $('#viewTasks').append(`
-        <tr data-id=${task.id}>
+        <tr data-id="${task.id}">
             <td>
                 <button class="compButton">Task Complete</button>
             </td>
