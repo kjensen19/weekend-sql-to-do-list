@@ -36,8 +36,45 @@ toDoRouter.post('/', (req, res) => {
 })
 
 // PUT
+toDoRouter.put('/:idToUpdate', (req, res) => {
+    let taskMarkedComplete = req.params.idToChange;
 
+    const sqlQuery = `
+        UPDATE "tasks"
+        SET "complete"=TRUE
+        WHERE "id"=$1;
+    `
+
+    const sqlValues = [taskMarkedComplete]
+
+    db.query(sqlQuery, sqlValues)
+    .then((dbRes) => {
+        res.sendStatus(200)
+    })
+    .catch((dbErr) => {
+        console.log('Error in PUT')
+        res.sendStatus(500)
+    })
+})
 
 // DELETE
+toDoRouter.delete('/:idToDElete', (req, res) => {
+    console.log(reqParams)
+    taskId = req.params.idToDelete
 
+    const sqlQuery = `
+        DELETE FROM "tasks"
+        WHERE "id"=$1
+    `
+
+    const sqlValues = [taskId]
+
+    db.query(sqlQuery, sqlValues)
+        .then((dbRes) => {
+            res.sendStatus(200);
+        })
+        .catch((dbErr) => {
+            console.log('DELETE ROUTE is on FIRE SS')
+        })
+})
 module.exports = toDoRouter;
