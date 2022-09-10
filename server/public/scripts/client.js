@@ -3,6 +3,7 @@ $(document).ready(onReady);
 function onReady() {
   console.log('JS/JQ')
   fetchTasks()
+  fetchCalendar()
   $('#viewTasks').on('click', '.compButton', completeTask)
   $('#viewTasks').on('click', '.delButton', deleteTask)
   $('#submitBut').on('click', handleSubmit)
@@ -30,6 +31,16 @@ function renderTasks (tasks){
       `);
     }
 }
+
+// function renderCalendar(calendar) {
+//     $('#viewCalendar').empty();
+//     for(let day of calendar) {
+//         $('#viewCalendar').append(`
+//             <tr>
+//                 <td>
+//         `)
+//     }
+// }
 
 function handleSubmit() {
     console.log('Submit button clicked.')
@@ -63,6 +74,18 @@ function fetchTasks() {
         renderTasks(response)
     }).catch(function(error) {
         console.log('GET is on fire', error)
+    })
+}
+
+function fetchCalendar() {
+    $.ajax({
+        type: 'GET',
+        url:'/calendar'
+    }).then(function(response) {
+        console.log(response);
+        //renderCalendar(response)
+    }).catch(function(error) {
+        console.log('CALENDAR GET is boxed', error)
     })
 }
 
