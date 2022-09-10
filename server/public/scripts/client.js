@@ -24,6 +24,7 @@ function renderTasks (tasks){
             </td>
             <td>${task.task}</td>
             <td>${task.complete}</td>
+            <td>${task.target}</td>
             <td>
                 <button class="delButton">Delete Task</button>
             </td>
@@ -33,11 +34,11 @@ function renderTasks (tasks){
 }
 
 function renderCalendar(calendar) {
-    $('caption').text(`${calendar[0].month}`)
+    $('caption').text(`${calendar[0].month}, ${calendar[0].year}`)
     let targetWeek = 1;
     for(let day of calendar) {
         console.log('targetWeek = ', targetWeek)
-        $('#viewCalendar').children(`#${targetWeek}`).children(`.${day.dayname.trim()}`).text(`${day.day}`)
+        $('#viewCalendar').children(`#${targetWeek}`).children(`.${day.dayname.trim()}`).attr('id', `${day.id}`).text(`${day.day}`)
         if (day.dayname.trim() === "Saturday"){
             targetWeek += 1;
         }
@@ -50,6 +51,8 @@ function handleSubmit() {
     console.log('Submit button clicked.')
     let newTask = {};
     newTask.task = $('#enterTask').val();
+    newTask.date = $('#enterDate').val()
+    console.log(newTask.date)
     addTask(newTask);
 }
 
@@ -99,13 +102,20 @@ function completeTask() {
     console.log($(this))
     $(this).text('✅')
     $(this).attr('disable', true)
-    console.log('I already read that one')
+    console.log('I already did that one')
     $.ajax({
         method: 'PUT',
         url: `/tasks/${idToUpdate}`
     }).then((response) => {
         fetchTasks()
     })
+}
+
+//PUT to update calendar with task data
+    //is it possible to store a SQL query in a table?
+
+function addTaskToCalendar() {
+    let idToUpdate = 7
 }
 
 //DELETE to del task

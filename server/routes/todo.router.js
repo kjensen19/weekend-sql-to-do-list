@@ -8,7 +8,9 @@ const db = require('../modules/pool');
 
 // GET
 toDoRouter.get('/', (req,res) => {
-    let queryText = 'SELECT * FROM "tasks";';
+    // const sqlQuery = "SELECT name,birthdate as birthday,to_char(birthdate,'MM-DD-YYYY') As birthdate FROM artist
+
+    let queryText = "SELECT id, task, complete, target, to_char(target, 'MM-DD-YYYY') AS target FROM tasks ORDER BY target DESC;";
     db.query(queryText).then(result => {
         res.send(result.rows);
     })
@@ -23,9 +25,9 @@ toDoRouter.post('/', (req, res) => {
     let taskToAdd = req.body;
     console.log('Adding task', taskToAdd);
 
-    let queryText = `INSERT INTO "tasks" ("task", "complete")
-                      VALUES ($1, $2);`;
-    db.query(queryText, [taskToAdd.task, 'FALSE'])
+    let queryText = `INSERT INTO "tasks" ("task", "complete", "target")
+                      VALUES ($1, $2, $3)`;
+    db.query(queryText, [taskToAdd.task, 'FALSE', taskToAdd.date])
     .then(result => {
         res.sendStatus(201);
     })
