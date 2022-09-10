@@ -32,15 +32,19 @@ function renderTasks (tasks){
     }
 }
 
-// function renderCalendar(calendar) {
-//     $('#viewCalendar').empty();
-//     for(let day of calendar) {
-//         $('#viewCalendar').append(`
-//             <tr>
-//                 <td>
-//         `)
-//     }
-// }
+function renderCalendar(calendar) {
+    $('caption').text(`${calendar[0].month}`)
+    let targetWeek = 1;
+    for(let day of calendar) {
+        console.log('targetWeek = ', targetWeek)
+        $('#viewCalendar').children(`#${targetWeek}`).children(`.${day.dayname.trim()}`).text(`${day.day}`)
+        if (day.dayname.trim() === "Saturday"){
+            targetWeek += 1;
+        }
+   
+
+    }
+}
 
 function handleSubmit() {
     console.log('Submit button clicked.')
@@ -83,7 +87,7 @@ function fetchCalendar() {
         url:'/calendar'
     }).then(function(response) {
         console.log(response);
-        //renderCalendar(response)
+        renderCalendar(response)
     }).catch(function(error) {
         console.log('CALENDAR GET is boxed', error)
     })
