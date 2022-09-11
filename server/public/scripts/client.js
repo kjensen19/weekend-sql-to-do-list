@@ -17,39 +17,17 @@ function renderCalendar (calendar){
     console.log('Is this thing on? RENDER')
     $('caption').text(`${calendar[0].month}, ${calendar[0].year}`)
     let targetWeek = 1;
-    $('#secrets').empty();
-    for(let day of calendar){
-        let yesOrNo = ' No'
-        if (day.complete) {
-            yesOrNo = ' Yes'
-        }
+    for (let day of calendar){
         console.log('targetWeek = ', targetWeek)
         console.log(`day.day = ${day.day}`)
-        $('#viewCalendar').children(`#week-${targetWeek}`).children(`.${day.dayname.trim()}`).attr('id', `${day.id}`).text(`${day.day}`)
+        $('#viewCalendar').children(`#week-${targetWeek}`).children(`.${day.dayname.trim()}`).attr('id', `${day.calendar_date}`).text(`${day.day}`)
         if (day.dayname.trim() === "Saturday"){
             targetWeek += 1;}
-        if (day.task !== 'no'){
-            console.log('why?')
-            $('#secrets').append(`
-            <div class="offcanvas offcanvas-start text-bg-dark" data-id="${day.id}" tabindex="-1" id="offcanvasDark" aria-labelledby="offcanvasDarkLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasDarkLabel">To Do:</h5>
-                </div>
-                <div class="offcanvas-body">
-                    <h3>${day.dayname}, ${day.month} ${day.day} ${day.year}</h3>
-                    <h4>${day.task}</h2>
-                    <h3>Completed? ${yesOrNo}</h2>
-                    <button class="compButton ${yesOrNo} btn btn-light">  Task Complete</button>
-                    <button class="delButton btn btn-light">Delete Task</button>
-                </div>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close">CLICK</button>
-            </div>
-            `)
-            $(`#${day.id}`).append(`
-            <a data-bs-toggle="offcanvas" href="#offcanvasDark" role="button" aria-controls="offcanvas">
-                ${day.task}
-            </a>
-            `)}
+        }
+    fetchTasks(calendar[0].calendar_date, calendar[calendar.length - 1].calendar_date)
+
+
+         
 
     //   $('#viewTasks').append(`
     //     <tr class="${task.complete}" data-id="${task.id}">
@@ -65,24 +43,42 @@ function renderCalendar (calendar){
     //     </tr>
     //   `)
           
-        $('.true').prop("disabled", true).css("background-color", "lightgreen");
-    }
+    
+    
     
 }
 
-// function renderCalendar(calendar) {
-//     $('caption').text(`${calendar[0].month}, ${calendar[0].year}`)
-//     let targetWeek = 1;
-//     for(let day of calendar) {
-//         console.log('targetWeek = ', targetWeek)
-//         $('#viewCalendar').children(`#${targetWeek}`).children(`.${day.dayname.trim()}`).attr('id', `${day.id}`).text(`${day.day}`)
-//         if (day.dayname.trim() === "Saturday"){
-//             targetWeek += 1;
-//         }
-   
+function renderTasks(tasks){
+    $('#secrets').empty();
 
-//     }
-// }
+    for (let task of tasks) {
+        let yesOrNo = ' No'
+        if (task.complete) {
+            yesOrNo = ' Yes'
+        }
+        console.log('why?')
+        $('#secrets').append(`
+        <div class="offcanvas offcanvas-start text-bg-dark" data-id="${task.id}" tabindex="-1" id="offcanvasDark" aria-labelledby="offcanvasDarkLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasDarkLabel">To Do:</h5>
+            </div>
+            <div class="offcanvas-body">
+                <h3>${task.target}</h3>
+                <h4>${task.task}</h2>
+                <h3>Completed? ${yesOrNo}</h2>
+                <button class="compButton ${yesOrNo} btn btn-light">  Task Complete</button>
+                <button class="delButton btn btn-light">Delete Task</button>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close">CLICK</button>
+        </div>
+        `)
+        $(`#${task.target}`).append(`
+        <a data-bs-toggle="offcanvas" href="#offcanvasDark" role="button" aria-controls="offcanvas">
+            ${task.task}
+        </a>
+    `)}
+    $('.true').prop("disabled", true).css("background-color", "lightgreen");
+}
 
 function handleSubmit() {
     console.log('Submit button clicked.')
@@ -94,39 +90,40 @@ function handleSubmit() {
 }
 
 // //POST to add new task
-// function addTask(taskToAdd) {
-//     $.ajax({
-//         type: 'POST',
-//         url: '/tasks',
-//         data: taskToAdd
-//     }).then(function(response) {
-//         console.log('Response from server.', response);
-//         fetchTasks();
-//     }).catch(function(error) {
-//         console.log('Error in POST', error)
-//         alert('Unable to add task at this time, please try again later');
-//     })
-// }
+function addTask(taskToAdd) {
+    //let dateToUpdate = newTask.data
+    $.ajax({
+        type: 'PUT',
+        url: `/calendar`,
+        data: taskToAdd
+    }).then(function(response) {
+        console.log('Response from server.', response);
+        fetchCalendar();
+    }).catch(function(error) {
+        console.log('Error in POST', error)
+        alert('Unable to add task at this time, please try again later');
+    })
+}
 
-//GET to fetch tasks
-// function fetchTasks() {
-//     $.ajax({
-//         type: 'GET',
-//         url: '/tasks'
-//     }).then(function(response) {
-//         console.log(response);
-//         renderTasks(response)
-//     }).catch(function(error) {
-//         console.log('GET is on fire', error)
-//     })
-// }
+// GET to fetch tasks
+function fetchTasks(minDate, maxDate) {
+    $.ajax({
+        type: 'GET',
+        url: `/tasks?minDate=${minDate}&maxDate=${maxDate}`
+    }).then(function(response) {
+        console.log('fetch task', response);
+        renderTasks(response)
+    }).catch(function(error) {
+        console.log('GET is on fire', error)
+    })
+}
 
 function fetchCalendar() {
     $.ajax({
         type: 'GET',
         url:'/calendar'
     }).then(function(response) {
-        console.log(response);
+        console.log('please work', response);
         renderCalendar(response)
         $('button .true').prop('disabled', true)
     }).catch(function(error) {
@@ -136,7 +133,7 @@ function fetchCalendar() {
 
 //PUT to update completion
 function completeTask() {
-    let idToUpdate = $(this).closest('tr').data('id')
+    let dateTo = $(this).closest('tr').data('id')
     console.log($(this))
     $(this).prop('disabled', true)
     console.log('I already did that one')
@@ -147,6 +144,7 @@ function completeTask() {
         fetchCalendar()
     })
 }
+
 
 //PUT to update calendar with task data
     //is it possible to store a SQL query in a table?

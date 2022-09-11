@@ -9,9 +9,15 @@ const db = require('../modules/pool');
 // GET
 toDoRouter.get('/', (req,res) => {
     // const sqlQuery = "SELECT name,birthdate as birthday,to_char(birthdate,'MM-DD-YYYY') As birthdate FROM artist
-
-    let queryText = "SELECT id, complete, task, target, to_char(target, 'MM-DD-YYYY') AS target FROM tasks;";
-    db.query(queryText).then(result => {
+    let minDate = req.query.minDate
+    let maxDate = req.query.maxDate
+    let queryText = `
+    SELECT * from  tasks
+      WHERE to_char(target, 'MM-DD-YYYY') BETWEEN $1 and $2;   
+    `
+    let queryVals = [minDate, maxDate]
+    console.log(`in todo GET ${queryVals}`)
+    db.query(queryText, queryVals).then(result => {
         res.send(result.rows);
     })
     .catch(error => {
