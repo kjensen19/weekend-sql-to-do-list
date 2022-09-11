@@ -12,9 +12,10 @@ toDoRouter.get('/', (req,res) => {
     let minDate = req.query.minDate
     let maxDate = req.query.maxDate
     let queryText = `
-    SELECT * from  tasks
-      WHERE to_char(target, 'MM-DD-YYYY') BETWEEN $1 and $2;   
-    `
+    SELECT id, task, complete, target, to_char(target, 'MM-DD-YYYY') AS target FROM tasks
+      WHERE target between $1 and $2
+      ORDER BY id ASC;
+    `;
     let queryVals = [minDate, maxDate]
     console.log(`in todo GET ${queryVals}`)
     db.query(queryText, queryVals).then(result => {
@@ -44,8 +45,8 @@ toDoRouter.post('/', (req, res) => {
 })
 
 // PUT
-toDoRouter.put('/:idToUpdate', (req, res) => {
-    let taskMarkedComplete = req.params.idToUpdate;
+toDoRouter.put('/:dateTo', (req, res) => {
+    let taskMarkedComplete = req.params.dateTo;
 
     const sqlQuery = `
         UPDATE "tasks"

@@ -36,7 +36,7 @@ calendarRouter.put('/', (req, res) => {
         INSERT INTO "tasks"
         (task, target)
         VALUES
-        ($1, $2;
+        ($1, $2);
     `
     const sqlValues = [req.body.task, req.body.date]
 
