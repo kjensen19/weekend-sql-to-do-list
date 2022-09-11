@@ -1,5 +1,6 @@
 html {
     box-sizing: border-box;
+    text-transform: capitalize;
 }
 
 .true {
@@ -18,6 +19,17 @@ button.true::before {
 
 button {
   width: 10rem;
+}
+
+td {
+  height: 8rem
+}
+
+li{
+  font-size: 3rem;
+}
+a .nav-link {
+  color: white;
 }
 
 

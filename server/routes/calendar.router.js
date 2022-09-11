@@ -9,7 +9,8 @@ const db = require('../modules/pool');
 calendarRouter.get('/', (req, res) => {
     let queryText = `
         SELECT * FROM "calendar"
-        WHERE "month"='September' AND "year"='2022';`
+        WHERE "month"='September' AND "year"='2022'
+        ORDER BY "id";`
     db.query(queryText).then(result => {
         res.send(result.rows);
     })
