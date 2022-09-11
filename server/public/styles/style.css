@@ -2,20 +2,26 @@ html {
     box-sizing: border-box;
 }
 
-header {
-    color:red;
-}
+.true {
+  background-color: lightgreen;
+  font-weight: bold;
+} 
 
-.true  {
-    background-color: green;
+.true .compButton  {
+    background-color: mediumseagreen;
+    border: none;
 }
 
 button.true::before {
     content: "✅ "
 } 
 
+button {
+  width: 10rem;
+}
 
-#table-container {
+
+/* #table-container {
     display: flex;
     align-items: left;
     align-content:space-between;
@@ -37,7 +43,7 @@ button.true::before {
     background-color: white;
   }
 
-  caption {
+  /* caption {
     font-weight: bold;
     font-size: 2.5rem;
     text-align: center;
@@ -48,27 +54,27 @@ button.true::before {
     width: 100%;
     color: darkslateblue;
     background-color: white;
-  }
+  } */
 
-  thead {
+  /* thead {
     background-color: darkslateblue;
     color: white;
     font-size: 1.75rem;
 	  text-transform: uppercase;
 	  letter-spacing: 2%;
-  }
+  } */
 
   /* if border set in table it is outside, in th, td it is all cells */
 
-  th, td {
+  /* th, td {
     padding: .5rem;
   }
 
   thead th {
     width: 20%;
-  }
+  } */
 /* highlight cell for emphasis */
-  .true{
+  /* .true{
     background-color:mediumspringgreen;
     font-weight: bold;
   }
@@ -84,4 +90,4 @@ button.true::before {
   tr.true td{
     background-color: lightgreen;
     font-weight: bold;
-  }
+  }  */

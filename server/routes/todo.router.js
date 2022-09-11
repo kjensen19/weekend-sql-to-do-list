@@ -10,7 +10,7 @@ const db = require('../modules/pool');
 toDoRouter.get('/', (req,res) => {
     // const sqlQuery = "SELECT name,birthdate as birthday,to_char(birthdate,'MM-DD-YYYY') As birthdate FROM artist
 
-    let queryText = "SELECT id, task, complete, target, to_char(target, 'MM-DD-YYYY') AS target FROM tasks ORDER BY target DESC;";
+    let queryText = "SELECT id, task, complete, target, to_char(target, 'MM-DD-YYYY') AS target FROM tasks;";
     db.query(queryText).then(result => {
         res.send(result.rows);
     })

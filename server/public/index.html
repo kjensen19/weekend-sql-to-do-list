@@ -6,18 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="./vendors/jquery.js"></script>
     <script src="./scripts/client.js"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    <!-- CSS only -->
     <link rel="stylesheet" href="./styles/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    
     <title>Document</title>
 </head>
-<body>
+<body class="text-bg-dark p-3">
     <header></header>
     <section id="inputSec">
         <input type="text" placeholder="Enter new task" id="enterTask">
         <input type="date" id="enterDate" required>
-        <button id="submitBut">Submit</button>
+        <button id="submitBut" class="btn btn-light">Submit</button>
     </section>
-    <section id="table">
-        <table>
+    <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasDark" role="button" aria-controls="offcanvasExample">
+      Link with href
+    </a>
+    <section id="secrets"></section>
+    <!-- <section id="table" class=".table-responsive">
+        <table class="table table-dark table-striped">
             <thead>
               <tr>
                 <th>Complete Task</th>
@@ -30,9 +39,9 @@
             <tbody id="viewTasks">
             </tbody>
           </table>
-    </section>
+    </section> -->
     <section id="calendar">
-      <table>
+      <table class="table table-dark table-striped table-hover caption-top">
           <caption></caption>
           <thead>
             <tr>

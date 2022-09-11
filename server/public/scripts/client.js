@@ -17,20 +17,37 @@ function renderTasks (tasks){
     console.log('Is this thing on? RENDER')
     $('#viewTasks').empty();
     for(let task of tasks){
-      $('#viewTasks').append(`
-        <tr class="${task.complete}" data-id="${task.id}">
-            <td>
-                <button class="compButton ${task.complete}">Task Complete</button>
-            </td>
-            <td>${task.task}</td>
-            <td>${task.complete}</td>
-            <td>${task.target}</td>
-            <td>
-                <button class="delButton">Delete Task</button>
-            </td>
-        </tr>
-      `);
+        $('#secrets').append(`
+        <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasDark" aria-labelledby="offcanvasDarkLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasDarkLabel">To Do:</h5>
+            </div>
+            <div class="offcanvas-body">
+                <button class="compButton ${task.complete} btn btn-light">  Task Complete</button>
+                <p>${task.task}</p>
+                <p>${task.complete}</p>
+                <p>${task.target}</b>
+                <button class="delButton btn btn-light">Delete Task</button>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvasDark" aria-label="Close">CLICK</button>
+        </div>
+        `)
+    //   $('#viewTasks').append(`
+    //     <tr class="${task.complete}" data-id="${task.id}">
+    //         <td>
+    //             <button class="compButton ${task.complete} btn btn-light">  Task Complete</button>
+    //         </td>
+    //         <td>${task.task}</td>
+    //         <td>${task.complete}</td>
+    //         <td>${task.target}</td>
+    //         <td>
+    //             <button class="delButton btn btn-light">Delete Task</button>
+    //         </td>
+    //     </tr>
+    //   `)
+      $('.true').prop("disabled", true).css("background-color", "lightgreen");
     }
+    
 }
 
 function renderCalendar(calendar) {
@@ -91,6 +108,7 @@ function fetchCalendar() {
     }).then(function(response) {
         console.log(response);
         renderCalendar(response)
+        $('button .true').prop('disabled', true)
     }).catch(function(error) {
         console.log('CALENDAR GET is boxed', error)
     })
@@ -100,8 +118,7 @@ function fetchCalendar() {
 function completeTask() {
     let idToUpdate = $(this).closest('tr').data('id')
     console.log($(this))
-    $(this).text('✅')
-    $(this).attr('disable', true)
+    $(this).prop('disabled', true)
     console.log('I already did that one')
     $.ajax({
         method: 'PUT',
