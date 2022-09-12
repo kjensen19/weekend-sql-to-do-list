@@ -4,17 +4,18 @@ function onReady() {
   console.log('JS/JQ')
 //   fetchTasks()
   fetchCalendar()
-  $('#viewTasks').on('click', '.delButton', deleteTask)
+  $('#secrets').on('click', '.delButton', deleteTask)
   $('#submitBut').on('click', handleSubmit)
   $('#secrets').on('click', '.compButton', completeTask)
+  $('.dropdown-item').on('click', fetchCalendar)
 
 }
-
+let firstTime = true
 //Function to render task data,
 //including comp/del buttons
 //and attach id for manipulation
 function renderCalendar (calendar){
-    console.log('Is this thing on? RENDER')
+    console.log('Is this thing on? RENDER ', calendar)
     $('caption').text(`${calendar[0].month}, ${calendar[0].year}`)
     let targetWeek = 1;
     for (let day of calendar){
@@ -67,13 +68,13 @@ function renderTasks(tasks){
                 <h4>${task.task}</h2>
                 <h3>Completed? ${yesOrNo}</h2>
                 <button class="compButton ${yesOrNo} btn btn-light" id=${task.id}>  Task Complete</button>
-                <button class="delButton btn btn-light">Delete Task</button>
+                <button class="delButton btn btn-light" id=${task.id}>Delete Task</button>
             </div>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close">CLICK</button>
         </div>
         `)
         $(`#${task.target}`).append(`<br>
-        <a data-bs-toggle="offcanvas" href="#offcanvasDark${task.id}" role="button" aria-controls="offcanvas">
+        <a data-bs-toggle="offcanvas" class="${yesOrNo}" href="#offcanvasDark${task.id}" role="button" aria-controls="offcanvas">
             ${task.task}
         </a>
     `)}
@@ -98,6 +99,7 @@ function addTask(taskToAdd) {
         data: taskToAdd
     }).then(function(response) {
         console.log('Response from server.', response);
+        firstTime = true
         fetchCalendar();
     }).catch(function(error) {
         console.log('Error in POST', error)
@@ -112,20 +114,45 @@ function fetchTasks(minDate, maxDate) {
         url: `/tasks?minDate=${minDate}&maxDate=${maxDate}`
     }).then(function(response) {
         console.log('fetch task', response);
-        renderTasks(response)
+        if (firstTime === true) {
+            $('#startScreenTarget').empty()
+            for (let task of response) {
+                let yesOrNo = 'No'
+                if (task.complete) {
+                    yesOrNo = 'Yes'
+                }
+                $('#startScreenTarget').append(`
+                    <li class="${yesOrNo}">${task.task}<br> Target: ${task.target}<br> Complete: ${yesOrNo}</li>
+                `)
+            }
+        $('#startScreen').modal('show')
+        firstTime = false
+        } else {
+        renderTasks(response)}
     }).catch(function(error) {
         console.log('GET is on fire', error)
     })
 }
 
 function fetchCalendar() {
+    if (firstTime === false){
+        console.log('this in fetchCal', $(this).data().month)
+        month = $(this).data().month
+        year = $(this).data().year
+        console.log('month', month)
+        console.log('year', year)
+    } else {
+        fetchTasks('09-01-2022', '12-31-2023')
+        return
+    }
     $.ajax({
         type: 'GET',
-        url:'/calendar'
+        url:`/calendar?month=${month}&year=${year}`
     }).then(function(response) {
         console.log('please work', response);
         renderCalendar(response)
         $('button .true').prop('disabled', true)
+        firstTime = false
     }).catch(function(error) {
         console.log('CALENDAR GET is boxed', error)
     })
@@ -141,6 +168,7 @@ function completeTask() {
         method: 'PUT',
         url: `/tasks/${dateTo}`
     }).then((response) => {
+        firstTime = true
         fetchCalendar()
     })
 }
@@ -155,12 +183,13 @@ function addTaskToCalendar() {
 
 //DELETE to del task
 function deleteTask() {
-    let idToDelete = $(this).closest('tr').data('id');
+    let idToDelete = $(this).attr('id');
     $.ajax({
         method: 'DELETE',
         url: `/tasks/${idToDelete}`
     }).then((response) => {
-        fetchTasks()
+        firstTime = true;
+        fetchCalendar()
     }).catch((response) => {
         console.log('Error in delete', response)
     })

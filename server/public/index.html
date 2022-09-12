@@ -16,33 +16,76 @@
     <title>Document</title>
 </head>
 <body class="text-bg-dark p-3">
+  <div class="modal fade" id="startScreen" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title" id="exampleModalLabel">Please review tasks, close and select a month to view to-do items</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ul id="startScreenTarget"></ul> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <header>
-    <ul class="nav justify-content-end">
-      <li class="nav-item">
-        <a class="nav-link" href="#"><</a>
-      </li>
-      <li class="nav-item">Month</li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">></a>
-      </li>
-    </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end dropstart" id="navbarNavDarkDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Month
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                <li><button class="dropdown-item" type="button" id="September2022" data-month="September" data-year="2022">September, 2022</button></li>
+                <li><button class="dropdown-item" type="button" id="October2022" data-month="October" data-year="2022">October, 2022</button></li>
+                <li><button class="dropdown-item" type="button" id="November2022" data-month="November" data-year="2022">November, 2022</button></li>
+                <li><button class="dropdown-item" type="button" id="December2022" data-month="December" data-year="2022">December, 2022</button></li>
+                <li><button class="dropdown-item" type="button" id="January2023" data-month="January" data-year="2023">January, 2023</button></li>
+                <li><button class="dropdown-item" type="button" id="February2023" data-month="February" data-year="2023">February, 2023</button></li>                
+                <li><button class="dropdown-item" type="button" id="March2023" data-month="March" data-year="2023">March, 2023</button></li>
+                <li><button class="dropdown-item" type="button" id="April20203" data-month="April" data-year="2023">April, 2023</button></li>                
+                <li><button class="dropdown-item" type="button" id="May2023" data-month="May" data-year="2023">May, 2023</button></li>
+                <li><button class="dropdown-item" type="button" id="June2023" data-month="June" data-year="2023">June, 2023</button></li>                
+                <li><button class="dropdown-item" type="button" id="July2023" data-month="July" data-year="2023">July, 2023</button></li>
+                <li><button class="dropdown-item" type="button" id="August2023" data-month="August" data-year="2023">August, 2023</button></li>
+                <li><button class="dropdown-item" type="button" id="September2023" data-month="September" data-year="2023">September, 2023</button></li>
+                <li><button class="dropdown-item" type="button" id="October2023" data-month="October" data-year="2023">October, 2023</button></li>                
+                <li><button class="dropdown-item" type="button" id="November2023" data-month="November" data-year="2023">November, 2023</button></li>
+                <li><button class="dropdown-item" type="button" id="December2023" data-month="December" data-year="2023">December, 2023</button></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   </header>
+  <section id="modalMania"></section>
   <section id="inputSec">
 <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content text-bg-dark">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">New Task</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <input type="textarea" placeholder="Enter new task" id="enterTask">
-            <input type="date" id="enterDate" required>
+            <input type="date" id="enterDate" required min="2022-09-01" max="2023-12-31">
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="submitBut">Save changes</button>
+            <button type="button" class="btn btn-secondary btn-close-white" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary btn-light" id="submitBut">Save changes</button>
           </div>
         </div>
       </div>
@@ -65,7 +108,7 @@
         </table>
   </section> -->
   <section id="calendar">
-    <table class="table table-dark table-striped table-hover caption-top">
+    <table class="table table-dark table-bordered table-striped table-hover caption-top table-responsive">
         <caption></caption>
         <thead>
           <tr>
@@ -131,5 +174,6 @@
     <button type="button" class="btn btn-primary btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
       Add New Task
     </button>
+  <!-- Full screen modal -->
 </body>
 </html>

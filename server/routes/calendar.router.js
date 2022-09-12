@@ -7,17 +7,19 @@ const db = require('../modules/pool');
 
 //GET
 calendarRouter.get('/', (req, res) => {
+    console.log('req.query', req.query.month)
+    let month = req.query.month
+    let year = req.query.year
+    
     let queryText = `
-        SELECT * FROM "calendar"
-        WHERE "month"='September' AND "year"='2022'
-        ORDER BY "id";`
-
-    let secondQuery = `
-        SELECT * FROM "tasks"
-        WHERE "target"='09%'
-    `
-    db.query(queryText).then(result => {
-        console.log(result.rows)
+    SELECT * FROM calendar
+      WHERE month=$1 AND year=$2
+      ORDER BY id;`
+    let queryVals = [month, year]
+  
+    
+    db.query(queryText, queryVals).then(result => {
+        console.log('in calendar get', result.rows)
         res.send(result.rows);
     })
     .catch(error => {

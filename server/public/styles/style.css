@@ -13,23 +13,69 @@ html {
     border: none;
 }
 
-button.true::before {
-    content: "✅ "
+a.Yes::before {
+    content: "✅ ";
 } 
 
 button {
   width: 10rem;
 }
 
+/* #startScreen {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 6rem;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  opacity: 1;
+  background-color: black;
+  line-height: 5rem;
+} */
+
 td {
-  height: 8rem
+  height: 8rem;
+  font-size: 1rem;
+  width: 14%;
+  border: 1px inset whitesmoke;
 }
 
 li{
   font-size: 3rem;
 }
-a .nav-link {
-  color: white;
+
+a {
+  color: lightcoral;
+  background-color: transparent;
+}
+
+a.Yes {
+  color: lightgreen;
+  background-color:transparent;
+}
+
+.dropdown-item {
+  font-size: 1rem;
+}
+
+a.dropdown-toggle {
+  font-size: 1.5rem;
+}
+
+caption {
+  font-size: 2.5rem;
+}
+
+#startScreenTarget {
+  color:black;
+  font-size: 1rem;
+  overflow: hidden;
+}
+
+div.modal-header{
+  color: black;
 }
 
 
