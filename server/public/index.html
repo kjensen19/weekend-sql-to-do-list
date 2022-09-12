@@ -5,30 +5,175 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="./vendors/jquery.js"></script>
+     <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
     <script src="./scripts/client.js"></script>
+    <!-- CSS only -->
     <link rel="stylesheet" href="./styles/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    
     <title>Document</title>
 </head>
-<body>
-    <header></header>
-    <section id="inputSec">
-        <input type="text" placeholder="Enter new task" id="enterTask">
-        <button id="submitBut">Submit</button>
-    </section>
-    <section id="table">
-        <table>
-            <thead>
-              <tr>
-                <th>Complete Task</th>
-                <th>Task</th>
-                <th>Complete</th>
-                <th>Delete</th>  
-              </tr>
-            </thead>
-            <tbody id="viewTasks">
-            </tbody>
-          </table>
-    </section>
-    
+<body class="text-bg-dark p-3">
+  <div class="modal fade" id="startScreen" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title" id="exampleModalLabel">Please review tasks, close and select a month to view to-do items</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ul id="startScreenTarget"></ul> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end dropstart" id="navbarNavDarkDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Month
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                <li><button class="dropdown-item" type="button" id="September2022" data-month="September" data-year="2022">September, 2022</button></li>
+                <li><button class="dropdown-item" type="button" id="October2022" data-month="October" data-year="2022">October, 2022</button></li>
+                <li><button class="dropdown-item" type="button" id="November2022" data-month="November" data-year="2022">November, 2022</button></li>
+                <li><button class="dropdown-item" type="button" id="December2022" data-month="December" data-year="2022">December, 2022</button></li>
+                <li><button class="dropdown-item" type="button" id="January2023" data-month="January" data-year="2023">January, 2023</button></li>
+                <li><button class="dropdown-item" type="button" id="February2023" data-month="February" data-year="2023">February, 2023</button></li>                
+                <li><button class="dropdown-item" type="button" id="March2023" data-month="March" data-year="2023">March, 2023</button></li>
+                <li><button class="dropdown-item" type="button" id="April20203" data-month="April" data-year="2023">April, 2023</button></li>                
+                <li><button class="dropdown-item" type="button" id="May2023" data-month="May" data-year="2023">May, 2023</button></li>
+                <li><button class="dropdown-item" type="button" id="June2023" data-month="June" data-year="2023">June, 2023</button></li>                
+                <li><button class="dropdown-item" type="button" id="July2023" data-month="July" data-year="2023">July, 2023</button></li>
+                <li><button class="dropdown-item" type="button" id="August2023" data-month="August" data-year="2023">August, 2023</button></li>
+                <li><button class="dropdown-item" type="button" id="September2023" data-month="September" data-year="2023">September, 2023</button></li>
+                <li><button class="dropdown-item" type="button" id="October2023" data-month="October" data-year="2023">October, 2023</button></li>                
+                <li><button class="dropdown-item" type="button" id="November2023" data-month="November" data-year="2023">November, 2023</button></li>
+                <li><button class="dropdown-item" type="button" id="December2023" data-month="December" data-year="2023">December, 2023</button></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section id="modalMania"></section>
+  <section id="inputSec">
+<!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content text-bg-dark">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">New Task</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input type="textarea" placeholder="Enter new task" id="enterTask">
+            <input type="date" id="enterDate" required min="2022-09-01" max="2023-12-31">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-close-white" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary btn-light" id="submitBut">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="secrets"></section>
+  <!-- <section id="table" class=".table-responsive">
+      <table class="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th>Complete Task</th>
+              <th>Task</th>
+              <th>Complete</th>
+              <th>Target Date</th>
+              <th>Delete</th>  
+            </tr>
+          </thead>
+          <tbody id="viewTasks">
+          </tbody>
+        </table>
+  </section> -->
+  <section id="calendar">
+    <table class="table table-dark table-bordered table-striped table-hover caption-top table-responsive">
+        <caption></caption>
+        <thead>
+          <tr>
+            <th>Sunday</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th> 
+            <th>Friday</th> 
+            <th>Saturday</th>  
+          </tr>
+        </thead>
+        <tbody id="viewCalendar">
+          <tr id="week-1">
+            <td class="Sunday"></td>
+            <td class="Monday"></td>
+            <td class="Tuesday"></td>
+            <td class="Wednesday"></td>
+            <td class="Thursday"></td>
+            <td class="Friday"></td>
+            <td class="Saturday"></td>
+          </tr>
+          <tr id="week-2">
+            <td class="Sunday"></td>
+            <td class="Monday"></td>
+            <td class="Tuesday"></td>
+            <td class="Wednesday"></td>
+            <td class="Thursday"></td>
+            <td class="Friday"></td>
+            <td class="Saturday"></td>
+          </tr>
+          <tr id="week-3">
+            <td class="Sunday"></td>
+            <td class="Monday"></td>
+            <td class="Tuesday"></td>
+            <td class="Wednesday"></td>
+            <td class="Thursday"></td>
+            <td class="Friday"></td>
+            <td class="Saturday"></td>
+          </tr>
+          <tr id="week-4">
+            <td class="Sunday"></td>
+            <td class="Monday"></td>
+            <td class="Tuesday"></td>
+            <td class="Wednesday"></td>
+            <td class="Thursday"></td>
+            <td class="Friday"></td>
+            <td class="Saturday"></td>
+          </tr>
+          <tr id="week-5">
+            <td class="Sunday"></td>
+            <td class="Monday"></td>
+            <td class="Tuesday"></td>
+            <td class="Wednesday"></td>
+            <td class="Thursday"></td>
+            <td class="Friday"></td>
+            <td class="Saturday"></td>
+          </tr>
+        </tbody>
+      </table>
+  </section>
+          <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Add New Task
+    </button>
+  <!-- Full screen modal -->
 </body>
 </html>

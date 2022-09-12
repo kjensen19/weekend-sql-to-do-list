@@ -8,8 +8,18 @@ const db = require('../modules/pool');
 
 // GET
 toDoRouter.get('/', (req,res) => {
-    let queryText = 'SELECT * FROM "tasks";';
-    db.query(queryText).then(result => {
+    // const sqlQuery = "SELECT name,birthdate as birthday,to_char(birthdate,'MM-DD-YYYY') As birthdate FROM artist
+    let minDate = req.query.minDate
+    let maxDate = req.query.maxDate
+    console.log('mindate =', minDate)
+    let queryText = `
+    SELECT id, task, complete, target, to_char(target, 'MM-DD-YYYY') AS target FROM tasks
+      WHERE target between $1 and $2
+      ORDER BY id ASC;
+    `;
+    let queryVals = [minDate, maxDate]
+    console.log(`in todo GET ${queryVals}`)
+    db.query(queryText, queryVals).then(result => {
         res.send(result.rows);
     })
     .catch(error => {
@@ -23,9 +33,9 @@ toDoRouter.post('/', (req, res) => {
     let taskToAdd = req.body;
     console.log('Adding task', taskToAdd);
 
-    let queryText = `INSERT INTO "tasks" ("task", "complete")
-                      VALUES ($1, $2);`;
-    db.query(queryText, [taskToAdd.task, 'FALSE'])
+    let queryText = `INSERT INTO "tasks" ("task", "complete", "target")
+                      VALUES ($1, $2, $3)`;
+    db.query(queryText, [taskToAdd.task, 'FALSE', taskToAdd.date])
     .then(result => {
         res.sendStatus(201);
     })
@@ -36,8 +46,8 @@ toDoRouter.post('/', (req, res) => {
 })
 
 // PUT
-toDoRouter.put('/:idToUpdate', (req, res) => {
-    let taskMarkedComplete = req.params.idToUpdate;
+toDoRouter.put('/:dateTo', (req, res) => {
+    let taskMarkedComplete = req.params.dateTo;
 
     const sqlQuery = `
         UPDATE "tasks"
