@@ -6,6 +6,7 @@ html {
 .Yes {
   background-color: lightgreen;
   font-weight: bold;
+  color: white;
 } 
 
 .true .compButton  {
@@ -34,6 +35,10 @@ button {
   background-color: black;
   line-height: 5rem;
 } */
+
+#startScreen {
+  width: 100vw;
+}
 
 td {
   height: 8rem;

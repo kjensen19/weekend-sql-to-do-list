@@ -11,53 +11,38 @@ function onReady() {
 
 }
 let firstTime = true
-//Function to render task data,
-//including comp/del buttons
+//Function to render calendar
 //and attach id for manipulation
 function renderCalendar (calendar){
     console.log('Is this thing on? RENDER ', calendar)
     $('caption').text(`${calendar[0].month}, ${calendar[0].year}`)
+    //variable to format calendar dates to correct days on calendar frame
     let targetWeek = 1;
     for (let day of calendar){
         console.log('targetWeek = ', targetWeek)
         console.log(`day.day = ${day.day}`)
         $('#viewCalendar').children(`#week-${targetWeek}`).children(`.${day.dayname.trim()}`).attr('id', `${day.calendar_date}`).text(`${day.day}`)
         if (day.dayname.trim() === "Saturday"){
+            //increment target week to move to next calendar row
             targetWeek += 1;}
         }
+        //Call fetch tasks with parameters for date range
     fetchTasks(calendar[0].calendar_date, calendar[calendar.length - 1].calendar_date)
-
-
-         
-
-    //   $('#viewTasks').append(`
-    //     <tr class="${task.complete}" data-id="${task.id}">
-    //         <td>
-    //             <button class="compButton ${task.complete} btn btn-light">  Task Complete</button>
-    //         </td>
-    //         <td>${task.task}</td>
-    //         <td>${task.complete}</td>
-    //         <td>${task.target}</td>
-    //         <td>
-    //             <button class="delButton btn btn-light">Delete Task</button>
-    //         </td>
-    //     </tr>
-    //   `)
-          
-    
-    
-    
+ 
 }
 
 function renderTasks(tasks){
+    //empty the offcanvas container
     $('#secrets').empty();
-
+    //loop through tasks for the selected month to render to the calendar
     for (let task of tasks) {
+        //change task complete from true/false to yes/no
         let yesOrNo = 'No'
         if (task.complete) {
             yesOrNo = 'Yes'
         }
         console.log('why?')
+        //create offcanvas for each task
         $('#secrets').append(`
         <div class="offcanvas offcanvas-start text-bg-dark" data-id="${task.id}" tabindex="-1" id="offcanvasDark${task.id}" aria-labelledby="offcanvasDarkLabel">
             <div class="offcanvas-header">
@@ -73,14 +58,17 @@ function renderTasks(tasks){
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close">CLICK</button>
         </div>
         `)
+        //display clickable task on the calendar
+        //trim task display 
         $(`#${task.target}`).append(`<br>
         <a data-bs-toggle="offcanvas" class="${yesOrNo} taskLink" href="#offcanvasDark${task.id}" role="button" aria-controls="offcanvas">
             ${(task.task).substring(0, 25)}
         </a>
     `)}
-    $('.true').prop("disabled", true).css("background-color", "lightgreen");
+    $('button.Yes').prop("disabled", true).css("background-color", "lightgreen").css("color", "white");
 }
-
+//handle submit button and call add task on collected inputs
+//empty inputs after add call
 function handleSubmit() {
     console.log('Submit button clicked.')
     let newTask = {};
@@ -88,17 +76,19 @@ function handleSubmit() {
     newTask.date = $('#enterDate').val()
     console.log(newTask.date)
     addTask(newTask);
+    $('#enterTask').val('')
+    $('#enterDate').val('')
 }
 
 // //POST to add new task
 function addTask(taskToAdd) {
-    //let dateToUpdate = newTask.data
     $.ajax({
-        type: 'PUT',
+        type: 'POST',
         url: `/calendar`,
         data: taskToAdd
     }).then(function(response) {
         console.log('Response from server.', response);
+        //reset to display full list as modal
         firstTime = true
         fetchCalendar();
     }).catch(function(error) {
@@ -107,13 +97,14 @@ function addTask(taskToAdd) {
     })
 }
 
-// GET to fetch tasks
+// GET to fetch tasks with date range (for currently displayed month)
 function fetchTasks(minDate, maxDate) {
     $.ajax({
         type: 'GET',
         url: `/tasks?minDate=${minDate}&maxDate=${maxDate}`
     }).then(function(response) {
         console.log('fetch task', response);
+        //check if start modal should be displayed
         if (firstTime === true) {
             $('#startScreenTarget').empty()
             for (let task of response) {
@@ -121,10 +112,12 @@ function fetchTasks(minDate, maxDate) {
                 if (task.complete) {
                     yesOrNo = 'Yes'
                 }
+                //append to start modal
                 $('#startScreenTarget').append(`
                     <li class="${yesOrNo}">${task.task}<br> Target: ${task.target}<br> Complete: ${yesOrNo}</li>
                 `)
             }
+            //show modal
         $('#startScreen').modal('show')
         firstTime = false
         } else {
@@ -133,8 +126,9 @@ function fetchTasks(minDate, maxDate) {
         console.log('GET is on fire', error)
     })
 }
-
+    //function to fetch calendar data
 function fetchCalendar() {
+    //not sure this conditional is neccesarry further testing required
     if (firstTime === false){
         console.log('this in fetchCal', $(this).data().month)
         month = $(this).data().month
@@ -151,6 +145,7 @@ function fetchCalendar() {
     }).then(function(response) {
         console.log('please work', response);
         renderCalendar(response)
+        //Test me!
         $('button .true').prop('disabled', true)
         firstTime = false
     }).catch(function(error) {
@@ -158,7 +153,7 @@ function fetchCalendar() {
     })
 }
 
-//PUT to update completion
+//PUT to update completion status
 function completeTask() {
     let dateTo = $(this).attr('id')
     console.log(`dateTo = ${dateTo}`)
@@ -171,14 +166,6 @@ function completeTask() {
         firstTime = true
         fetchCalendar()
     })
-}
-
-
-//PUT to update calendar with task data
-    //is it possible to store a SQL query in a table?
-
-function addTaskToCalendar() {
-    let idToUpdate = 7
 }
 
 //DELETE to del task

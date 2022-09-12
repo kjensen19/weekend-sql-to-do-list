@@ -6,12 +6,12 @@ const toDoRouter = express.Router();
 const db = require('../modules/pool');
 
 
-// GET
+// GET with date data
 toDoRouter.get('/', (req,res) => {
-    // const sqlQuery = "SELECT name,birthdate as birthday,to_char(birthdate,'MM-DD-YYYY') As birthdate FROM artist
     let minDate = req.query.minDate
     let maxDate = req.query.maxDate
     console.log('mindate =', minDate)
+    //SQL to select task data and convert date format for target date
     let queryText = `
     SELECT id, task, complete, target, to_char(target, 'MM-DD-YYYY') AS target FROM tasks
       WHERE target between $1 and $2
