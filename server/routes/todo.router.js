@@ -6,12 +6,12 @@ const toDoRouter = express.Router();
 const db = require('../modules/pool');
 
 
-// GET
+// GET with date data
 toDoRouter.get('/', (req,res) => {
-    // const sqlQuery = "SELECT name,birthdate as birthday,to_char(birthdate,'MM-DD-YYYY') As birthdate FROM artist
     let minDate = req.query.minDate
     let maxDate = req.query.maxDate
     console.log('mindate =', minDate)
+    //SQL to select task data and convert date format for target date
     let queryText = `
     SELECT id, task, complete, target, to_char(target, 'MM-DD-YYYY') AS target FROM tasks
       WHERE target between $1 and $2
@@ -29,20 +29,26 @@ toDoRouter.get('/', (req,res) => {
 })
 
 // POST
+// //POST Unused
 toDoRouter.post('/', (req, res) => {
-    let taskToAdd = req.body;
-    console.log('Adding task', taskToAdd);
+    console.log('SS PUT to add task: ', req.body)
+    //SQL to insert tasks
+    const sqlQuery = `
+        INSERT INTO "tasks"
+        (task, target)
+        VALUES
+        ($1, $2);
+    `
+    const sqlValues = [req.body.task, req.body.date]
 
-    let queryText = `INSERT INTO "tasks" ("task", "complete", "target")
-                      VALUES ($1, $2, $3)`;
-    db.query(queryText, [taskToAdd.task, 'FALSE', taskToAdd.date])
-    .then(result => {
-        res.sendStatus(201);
-    })
-    .catch(error => {
-        console.log('Error adding new task', error);
-        res.sendStatus(500)
-    })
+    db.query(sqlQuery, sqlValues)
+        .then((dbRes) => {
+            res.sendStatus(201)
+        })
+        .catch((dbErr) => {
+            console.log(`Error in PUT, ${dbErr}`)
+            res.sendStatus(500)
+        })
 })
 
 // PUT
