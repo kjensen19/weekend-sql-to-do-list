@@ -29,20 +29,26 @@ toDoRouter.get('/', (req,res) => {
 })
 
 // POST
+// //POST Unused
 toDoRouter.post('/', (req, res) => {
-    let taskToAdd = req.body;
-    console.log('Adding task', taskToAdd);
+    console.log('SS PUT to add task: ', req.body)
+    //SQL to insert tasks
+    const sqlQuery = `
+        INSERT INTO "tasks"
+        (task, target)
+        VALUES
+        ($1, $2);
+    `
+    const sqlValues = [req.body.task, req.body.date]
 
-    let queryText = `INSERT INTO "tasks" ("task", "complete", "target")
-                      VALUES ($1, $2, $3)`;
-    db.query(queryText, [taskToAdd.task, 'FALSE', taskToAdd.date])
-    .then(result => {
-        res.sendStatus(201);
-    })
-    .catch(error => {
-        console.log('Error adding new task', error);
-        res.sendStatus(500)
-    })
+    db.query(sqlQuery, sqlValues)
+        .then((dbRes) => {
+            res.sendStatus(201)
+        })
+        .catch((dbErr) => {
+            console.log(`Error in PUT, ${dbErr}`)
+            res.sendStatus(500)
+        })
 })
 
 // PUT

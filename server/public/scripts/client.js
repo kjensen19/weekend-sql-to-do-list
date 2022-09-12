@@ -8,7 +8,13 @@ function onReady() {
   $('#submitBut').on('click', handleSubmit)
   $('#secrets').on('click', '.compButton', completeTask)
   $('.dropdown-item').on('click', fetchCalendar)
+  $('#startClose').on('click', setFetch)
 
+}
+
+function setFetch() {
+    firstTime = true
+    fetchCalendar()
 }
 let firstTime = true
 //Function to render calendar
@@ -53,7 +59,7 @@ function renderTasks(tasks){
                 <h4>${task.task}</h2>
                 <h3>Completed? ${yesOrNo}</h2>
                 <button class="compButton ${yesOrNo} btn btn-light" id=${task.id}>  Task Complete</button>
-                <button class="delButton btn btn-light" id=${task.id}>Delete Task</button>
+                <button class="delButton btn btn-light" data-bs-dismiss="offcanvas" id=${task.id}>Delete Task</button>
             </div>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close">CLICK</button>
         </div>
@@ -74,7 +80,7 @@ function handleSubmit() {
     let newTask = {};
     newTask.task = $('#enterTask').val();
     newTask.date = $('#enterDate').val()
-    console.log(newTask.date)
+    console.log(newTask)
     addTask(newTask);
     $('#enterTask').val('')
     $('#enterDate').val('')
@@ -82,9 +88,10 @@ function handleSubmit() {
 
 // //POST to add new task
 function addTask(taskToAdd) {
+    //firstTime = true
     $.ajax({
         type: 'POST',
-        url: `/calendar`,
+        url: `/tasks`,
         data: taskToAdd
     }).then(function(response) {
         console.log('Response from server.', response);
@@ -120,8 +127,8 @@ function fetchTasks(minDate, maxDate) {
             //show modal
         $('#startScreen').modal('show')
         firstTime = false
-        } else {
-        renderTasks(response)}
+         } //else {
+        renderTasks(response)//}
     }).catch(function(error) {
         console.log('GET is on fire', error)
     })
@@ -136,8 +143,12 @@ function fetchCalendar() {
         console.log('month', month)
         console.log('year', year)
     } else {
-        fetchTasks('09-01-2022', '12-31-2023')
-        return
+        //fetchTasks('09-01-2022', '12-31-2023')
+        month = 'September'
+        year = "2022"
+        //return
+        
+        
     }
     $.ajax({
         type: 'GET',
@@ -147,7 +158,7 @@ function fetchCalendar() {
         renderCalendar(response)
         //Test me!
         $('button .true').prop('disabled', true)
-        firstTime = false
+        // firstTime = false
     }).catch(function(error) {
         console.log('CALENDAR GET is boxed', error)
     })
