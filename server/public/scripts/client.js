@@ -24,18 +24,23 @@ function renderCalendar (calendar){
     $('caption').text(`${calendar[0].month}, ${calendar[0].year}`)
     //variable to format calendar dates to correct days on calendar frame
     let targetWeek = 1;
+    $('#viewCalendar').children('[id^=week]').children().empty()
     for (let day of calendar){
         console.log('targetWeek = ', targetWeek)
         console.log(`day.day = ${day.day}`)
         $('#viewCalendar').children(`#week-${targetWeek}`).children(`.${day.dayname.trim()}`).attr('id', `${day.calendar_date}`).text(`${day.day}`)
-        if (day.dayname.trim() === "Saturday"){
+        if (day.dayname.trim() === "Saturday" && targetWeek < 5){
             //increment target week to move to next calendar row
-            targetWeek += 1;}
+            targetWeek += 1;
+        } else if(day.dayname.trim() === "Saturday" && targetWeek === 5) {
+            targetWeek = 1;
         }
+    }
         //Call fetch tasks with parameters for date range
     fetchTasks(calendar[0].calendar_date, calendar[calendar.length - 1].calendar_date)
  
 }
+
 
 function renderTasks(tasks){
     //empty the offcanvas container
