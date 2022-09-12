@@ -74,8 +74,8 @@ function renderTasks(tasks){
         </div>
         `)
         $(`#${task.target}`).append(`<br>
-        <a data-bs-toggle="offcanvas" class="${yesOrNo}" href="#offcanvasDark${task.id}" role="button" aria-controls="offcanvas">
-            ${task.task}
+        <a data-bs-toggle="offcanvas" class="${yesOrNo} taskLink" href="#offcanvasDark${task.id}" role="button" aria-controls="offcanvas">
+            ${(task.task).substring(0, 25)}
         </a>
     `)}
     $('.true').prop("disabled", true).css("background-color", "lightgreen");

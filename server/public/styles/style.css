@@ -56,6 +56,10 @@ a.Yes {
   background-color:transparent;
 }
 
+.classLink {
+  overflow: hidden;
+}
+
 .dropdown-item {
   font-size: 1rem;
 }

@@ -1,42 +1,39 @@
--- Task database table
 CREATE TABLE "tasks" (
   "id" SERIAL PRIMARY KEY,
   "task" VARCHAR(250) NOT NULL,
-  "complete" BOOLEAN
+  "complete" BOOLEAN DEFAULT FALSE,
+  "target" DATE
   );
--- insert statement for tasks
-INSERT INTO "tasks"
-  ("task", "complete")
-  VALUES
-  ('Build ToDo App', FALSE)
 
--- create calendar table 
-CREATE TABLE "calendar" (
+  CREATE TABLE "calendar" (
   "id" SERIAL PRIMARY KEY,
-  "calendar_date" VARCHAR,
-  "year" INTEGER,
+  "year" VARCHAR,
   "month"VARCHAR,
+  "week"VARCHAR,
   "day"VARCHAR,
   "dayname"VARCHAR,
-  "toDo"VARCHAR
-
+  "calendar_date" VARCHAR
 );
 
--- recursively create and insert calendar table entries
+
+
 INSERT INTO "calendar"
-("calendar_date", "year", "month", "day", "dayname")
-with recursive cte as (
-	-- start date here
-	select date(date_part('year', current_date) || '-09-10') as calendar_date
+  ("calendar_date", "year", "month", "week", "day", "dayname")
+  with recursive cte as (
+	-- customize start date here
+	select date(date_part('year', current_date) || '-09-01') as calendar_date
 	union all
 	select date(calendar_date + interval '1 day') as calendar_date from cte 
-	-- end date here
+	-- customize end date here
 	where date_part('year', calendar_date + interval '1 day') <= date_part('year', current_date + interval '1 year')
 )
 select
-calendar_date,
-date_part('year', calendar_date) as year,
-to_char(calendar_date, 'Month') as month,
-date_part('day', calendar_date) as day,
-to_char(calendar_date, 'Day') as dayname
+  to_char(calendar_date, 'MM-DD-YYYY') as calendar_date,
+  date_part('year', calendar_date) as year,
+  to_char(calendar_date, 'Month') as month,
+  to_char(calendar_date, 'w') as week,
+  date_part('day', calendar_date) as day,
+  to_char(calendar_date, 'Day') as dayname
 from cte;
+
+update "calendar" set "month" = RTRIM("month");
