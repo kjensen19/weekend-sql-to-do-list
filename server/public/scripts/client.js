@@ -66,7 +66,7 @@ function renderTasks(tasks){
                 <button class="compButton ${yesOrNo} btn btn-light" id=${task.id}>  Task Complete</button>
                 <button class="delButton btn btn-light" data-bs-dismiss="offcanvas" id=${task.id}>Delete Task</button>
             </div>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close">CLICK</button>
+            <button type="button" class="btn btn-light" data-bs-dismiss="offcanvas" aria-label="Close">CLOSE</button>
         </div>
         `)
         //display clickable task on the calendar
