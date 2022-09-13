@@ -13,8 +13,6 @@ Will be found in package.json:
   PG
   Some SQL manager (I used Postico)
  
-  
-Your project description goes here. What problem did you solve? How did you solve it?
 
 ## Installation
 Create a database named your 'weekend-to-do-app',
