@@ -24,6 +24,9 @@ button {
 
 #startScreen {
   width: 100vw;
+  border-radius: 4rem;
+  backdrop-filter: blur(5px);
+  
 }
 
 td {
@@ -34,7 +37,11 @@ td {
 }
 
 li{
-  font-size: 3rem;
+  font-size: 2rem;
+  border-radius: 2rem;
+  margin: 1rem;
+  padding-left: 1rem;
+  list-style: none;
 }
 
 a {
@@ -71,4 +78,17 @@ caption {
 
 div.modal-header{
   color: black;
+}
+
+.taskLink {
+  color: white;
+  text-decoration: none;
+}
+
+a.No:hover{
+  color: black
+}
+
+a.Yes:hover{
+  color: white;
 }

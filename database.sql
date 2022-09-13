@@ -35,8 +35,5 @@ select
   date_part('day', calendar_date) as day,
   to_char(calendar_date, 'Day') as dayname
 from cte;
--- trim extra spaces from month
+-- IMPORTANT!!! Trim extra spaces from month.  IMPORTANT!!!
 update "calendar" set "month" = RTRIM("month");
-
-SELECT "task" FROM "tasks"
- WHERE "target"='09-12-2022';
