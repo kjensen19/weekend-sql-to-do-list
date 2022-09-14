@@ -10,7 +10,7 @@ const db = require('../modules/pool');
 toDoRouter.get('/', (req,res) => {
     let minDate = req.query.minDate
     let maxDate = req.query.maxDate
-    console.log('mindate =', minDate)
+    //console.log('mindate =', minDate)
     //SQL to select task data and convert date format for target date
     let queryText = `
     SELECT id, task, complete, target, to_char(target, 'MM-DD-YYYY') AS target FROM tasks
@@ -18,7 +18,7 @@ toDoRouter.get('/', (req,res) => {
       ORDER BY id ASC;
     `;
     let queryVals = [minDate, maxDate]
-    console.log(`in todo GET ${queryVals}`)
+    //console.log(`in todo GET ${queryVals}`)
     db.query(queryText, queryVals).then(result => {
         res.send(result.rows);
     })
@@ -31,7 +31,7 @@ toDoRouter.get('/', (req,res) => {
 // POST
 // //POST Unused
 toDoRouter.post('/', (req, res) => {
-    console.log('SS PUT to add task: ', req.body)
+    //console.log('SS PUT to add task: ', req.body)
     //SQL to insert tasks
     const sqlQuery = `
         INSERT INTO "tasks"
@@ -75,7 +75,7 @@ toDoRouter.put('/:dateTo', (req, res) => {
 
 // DELETE
 toDoRouter.delete('/:idToDelete', (req, res) => {
-    console.log(req.params)
+    //console.log(req.params)
     taskId = req.params.idToDelete
 
     const sqlQuery = `

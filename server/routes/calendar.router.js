@@ -7,7 +7,7 @@ const db = require('../modules/pool');
 
 //GET taking month and year as query data
 calendarRouter.get('/', (req, res) => {
-    console.log('req.query', req.query.month)
+    //console.log('req.query', req.query.month)
     let month = req.query.month
     let year = req.query.year
     //SQL query to select the desired month
@@ -19,7 +19,7 @@ calendarRouter.get('/', (req, res) => {
   
     
     db.query(queryText, queryVals).then(result => {
-        console.log('in calendar get', result.rows)
+        //console.log('in calendar get', result.rows)
         res.send(result.rows);
     })
     .catch(error => {
@@ -27,29 +27,6 @@ calendarRouter.get('/', (req, res) => {
         res.sendStatus(500)
     })
 })
-
-
-// //POST Unused
-// calendarRouter.post('/', (req, res) => {
-//     console.log('SS PUT to add task: ', req.body)
-//     //SQL to insert tasks
-//     const sqlQuery = `
-//         INSERT INTO "tasks"
-//         (task, target)
-//         VALUES
-//         ($1, $2);
-//     `
-//     const sqlValues = [req.body.task, req.body.date]
-
-//     db.query(sqlQuery, sqlValues)
-//         .then((dbRes) => {
-//             res.sendStatus(201)
-//         })
-//         .catch((dbErr) => {
-//             console.log(`Error in PUT, ${dbErr}`)
-//             res.sendStatus(500)
-//         })
-// })
 
 
 module.exports = calendarRouter;

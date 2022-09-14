@@ -1,7 +1,7 @@
 $(document).ready(onReady);
 
 function onReady() {
-  console.log('JS/JQ')
+  //console.log('JS/JQ')
 //   fetchTasks()
   fetchCalendar()
   $('#secrets').on('click', '.delButton', deleteTask)
@@ -52,7 +52,7 @@ function renderTasks(tasks){
         if (task.complete) {
             yesOrNo = 'Yes'
         }
-        console.log('why?')
+        //console.log('why?')
         //create offcanvas for each task
         $('#secrets').append(`
         <div class="offcanvas offcanvas-start text-bg-dark" data-id="${task.id}" tabindex="-1" id="offcanvasDark${task.id}" aria-labelledby="offcanvasDarkLabel">
@@ -81,11 +81,11 @@ function renderTasks(tasks){
 //handle submit button and call add task on collected inputs
 //empty inputs after add call
 function handleSubmit() {
-    console.log('Submit button clicked.')
+    //console.log('Submit button clicked.')
     let newTask = {};
     newTask.task = $('#enterTask').val();
     newTask.date = $('#enterDate').val()
-    console.log(newTask)
+    //console.log(newTask)
     addTask(newTask);
     $('#enterTask').val('')
     $('#enterDate').val('')
@@ -99,7 +99,7 @@ function addTask(taskToAdd) {
         url: `/tasks`,
         data: taskToAdd
     }).then(function(response) {
-        console.log('Response from server.', response);
+        //console.log('Response from server.', response);
         //reset to display full list as modal
         firstTime = true
         fetchCalendar();
@@ -115,7 +115,7 @@ function fetchTasks(minDate, maxDate) {
         type: 'GET',
         url: `/tasks?minDate=${minDate}&maxDate=${maxDate}`
     }).then(function(response) {
-        console.log('fetch task', response);
+        //console.log('fetch task', response);
         //check if start modal should be displayed
         if (firstTime === true) {
             $('#startScreenTarget').empty()
@@ -142,7 +142,7 @@ function fetchTasks(minDate, maxDate) {
 function fetchCalendar() {
     //not sure this conditional is neccesarry further testing required
     if (firstTime === false){
-        console.log('this in fetchCal', $(this).data().month)
+        //console.log('this in fetchCal', $(this).data().month)
         month = $(this).data().month
         year = $(this).data().year
         console.log('month', month)
@@ -159,7 +159,7 @@ function fetchCalendar() {
         type: 'GET',
         url:`/calendar?month=${month}&year=${year}`
     }).then(function(response) {
-        console.log('please work', response);
+        //console.log('please work', response);
         renderCalendar(response)
         //Test me!
         $('button .true').prop('disabled', true)
@@ -172,9 +172,9 @@ function fetchCalendar() {
 //PUT to update completion status
 function completeTask() {
     let dateTo = $(this).attr('id')
-    console.log(`dateTo = ${dateTo}`)
+    //console.log(`dateTo = ${dateTo}`)
     $(this).prop('disabled', true)
-    console.log('I already did that one')
+    //console.log('I already did that one')
     $.ajax({
         method: 'PUT',
         url: `/tasks/${dateTo}`
